@@ -1,9 +1,12 @@
-﻿using SpeedWPF.ViewModels.Base;
+﻿using SpeedWPF.Services.Interfaces;
+using SpeedWPF.ViewModels.Base;
 
 namespace SpeedWPF.ViewModels
 {
     public class MainWindowViewModel : ViewModel
     {
+        private readonly IDataService _DataService;
+
         #region Title : string - Заголовок кона
 
         /// <summary>Заголовок кона</summary>
@@ -14,9 +17,6 @@ namespace SpeedWPF.ViewModels
 
         #endregion
 
-        public MainWindowViewModel()
-        {
-
-        }
+        public MainWindowViewModel(IDataService DataService) => _DataService = DataService;
     }
 }

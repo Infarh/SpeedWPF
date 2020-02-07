@@ -1,5 +1,8 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
+using SpeedWPF.Services;
+using SpeedWPF.Services.Interfaces;
+
 // ReSharper disable ConvertToAutoPropertyWhenPossible
 // ReSharper disable UnusedMember.Global
 
@@ -16,6 +19,8 @@ namespace SpeedWPF.ViewModels
             var services = new ServiceCollection();
             services.AddSingleton<MainWindowViewModel>();
             services.AddSingleton<MainWindow>();
+
+            services.AddTransient<IDataService, DataService>();
 
             _Services = services.BuildServiceProvider();
         }
