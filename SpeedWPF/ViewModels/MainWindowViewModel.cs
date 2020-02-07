@@ -7,11 +7,16 @@ namespace SpeedWPF.ViewModels
         #region Title : string - Заголовок кона
 
         /// <summary>Заголовок кона</summary>
-        private string _Title;
+        private string _Title = "Тестирование производительности";
 
         /// <summary>Заголовок кона</summary>
         public string Title { get => _Title; set => Set(ref _Title, value); }
 
         #endregion
+
+        public MainWindowViewModel()
+        {
+
+        }
     }
 }
