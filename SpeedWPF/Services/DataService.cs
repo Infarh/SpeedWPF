@@ -7,20 +7,15 @@ namespace SpeedWPF.Services
 {
     public class DataService : IDataService
     {
-        public class DataUpdatedEventArgs : EventArgs
-        {
-            public byte[] Data { get; }
-
-            public DataUpdatedEventArgs(byte[] Data) => this.Data = Data;
-        }
-
         private const int __DataCount = 512;
         private const int __DataLength = 128;
         private readonly byte[][] _Data;
 
-        private int _CurrentDataIndex = 0;
+        private int _CurrentDataIndex;
 
-        public event EventHandler<DataUpdatedEventArgs> DataUpdated;
+        public event EventHandler DataChanged;
+
+        public byte[] Data => _Data[_CurrentDataIndex];
 
         public DataService()
         {
@@ -62,8 +57,7 @@ namespace SpeedWPF.Services
                 await Task.Delay(Timeout, Cancel).ConfigureAwait(false);
                 Cancel.ThrowIfCancellationRequested();
                 _CurrentDataIndex = (_CurrentDataIndex + 1) % __DataLength;
-                var data = _Data[_CurrentDataIndex];
-                DataUpdated?.Invoke(this, new DataUpdatedEventArgs(data));
+                DataChanged?.Invoke(this, EventArgs.Empty);
             }
         }
     }
