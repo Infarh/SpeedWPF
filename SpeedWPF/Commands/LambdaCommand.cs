@@ -18,7 +18,7 @@ namespace SpeedWPF.Commands
 
         public override bool CanExecute(object parameter) => _CanExecute?.Invoke() ?? true;
 
-        public override void Execute(object parameter) => _CanExecute();
+        public override void Execute(object parameter) => _CommandAction();
     }
 
     public class LambdaCommand<T> : Command
@@ -36,6 +36,6 @@ namespace SpeedWPF.Commands
 
         public override bool CanExecute(object parameter) => _CanExecute?.Invoke(GetParameter(parameter)) ?? true;
 
-        public override void Execute(object parameter) => _CanExecute(GetParameter(parameter));
+        public override void Execute(object parameter) => _CommandAction(GetParameter(parameter));
     }
 }
