@@ -8,6 +8,7 @@ namespace SpeedWPF.Services.Interfaces
 {
     public interface IDataService
     {
-        
+        byte[] Data { get; }
+        event EventHandler DataChanged;
     }
 }

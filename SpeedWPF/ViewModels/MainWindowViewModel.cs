@@ -1,4 +1,5 @@
-﻿using SpeedWPF.Services.Interfaces;
+﻿using System;
+using SpeedWPF.Services.Interfaces;
 using SpeedWPF.ViewModels.Base;
 
 namespace SpeedWPF.ViewModels
@@ -17,6 +18,27 @@ namespace SpeedWPF.ViewModels
 
         #endregion
 
-        public MainWindowViewModel(IDataService DataService) => _DataService = DataService;
+        public ValueModel[] Values { get; }
+
+        public MainWindowViewModel(IDataService DataService)
+        {
+            _DataService = DataService;
+            var data = _DataService.Data;
+            var values_count = data.Length / 8;
+            var values = new ValueModel[values_count];
+            for(var i = 0; i < values_count; i++)
+                values[i] = new ValueModel(data, i);
+            Values = values;
+            _DataService.DataChanged += OnDataChanged;
+        }
+
+        private void OnDataChanged(object Sender, EventArgs E)
+        {
+            var values = Values;
+            var values_count = values.Length;
+            var new_data = _DataService.Data;
+            for(var i = 0; i < values_count; i++) 
+                values[i].Update(new_data);
+        }
     }
 }

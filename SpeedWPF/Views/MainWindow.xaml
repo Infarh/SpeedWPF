@@ -5,11 +5,33 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:SpeedWPF.ViewModels"
         xmlns:l="clr-namespace:SpeedWPF"
-        d:DataContext="{d:DesignInstance vm:MainWindowViewModel, IsDesignTimeCreatable=True}"
         Title="{Binding Title}"
         DataContext="{Binding MainWindowModel, Source={StaticResource Locator}}"
         Width="800" Height="600">
     <Grid>
-
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <GroupBox Header="Управление" Grid.Column="0">
+            <StackPanel Margin="5">
+                <Button Content="Запуск" Margin="5,3" Padding="30,5"/>
+                <Button Content="Остановка" Margin="5,3" Padding="30,5"/>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Header="Значения" Grid.Column="1">
+            <ItemsControl ItemsSource="{Binding Values}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type vm:ValueModel}">
+                        <TextBlock Text="{Binding Value, StringFormat={}{0:0.000}}" Margin="10,2"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </GroupBox>
     </Grid>
 </Window>
