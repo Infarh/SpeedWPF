@@ -14,5 +14,7 @@ namespace SpeedWPF.Services.Interfaces
         public bool Enabled { get; }
         public void StartDataUpdate(TimeSpan Timeout);
         public void StopDataUpdate();
+
+        long TimeDelta { get; }
     }
 }

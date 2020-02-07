@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using SpeedWPF.Services.Interfaces;
@@ -51,14 +52,29 @@ namespace SpeedWPF.Services
 
         public void StopDataUpdate() => _DataUpdateCancellation?.Cancel();
 
+        private long _TimeDelta;
+
+        public long TimeDelta => _TimeDelta;
+
         // ReSharper disable once FunctionNeverReturns
         private async void UpdateDataAsync(TimeSpan Timeout, CancellationToken Cancel)
         {
+            var timer = Stopwatch.StartNew();
+            var last_time = timer.ElapsedMilliseconds;
             while (true)
             {
                 await Task.Delay(Timeout, Cancel).ConfigureAwait(false);
-                Cancel.ThrowIfCancellationRequested();
+                if (Cancel.IsCancellationRequested)
+                {
+                    timer.Stop();
+                    Cancel.ThrowIfCancellationRequested();
+                }
                 _CurrentDataIndex = (_CurrentDataIndex + 1) % __DataLength;
+
+                var time = timer.ElapsedMilliseconds;
+                _TimeDelta = time - last_time;
+                last_time = time;
+
                 DataChanged?.Invoke(this, EventArgs.Empty);
             }
         }

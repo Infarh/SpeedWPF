@@ -15,8 +15,23 @@
         </Grid.ColumnDefinitions>
         <GroupBox Header="Управление" Grid.Column="0">
             <StackPanel Margin="5">
-                <Button Content="Запуск" Margin="5,3" Padding="30,5" Command="{Binding StartCommand}"/>
-                <Button Content="Остановка" Margin="5,3" Padding="30,5" Command="{Binding StopCommand}"/>
+                <Button Content="Запуск" Margin="5,3" Padding="50,5" Command="{Binding StartCommand}"/>
+                <Button Content="Остановка" Margin="5,3" Padding="50,5" Command="{Binding StopCommand}"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0" Grid.Row="0" Text="Текущий период:" HorizontalAlignment="Right"/>
+                    <TextBlock Grid.Column="0" Grid.Row="1" Text="Ошибка:" HorizontalAlignment="Right"/>
+
+                    <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding TimeDelta.TotalMilliseconds, StringFormat=0.0#}"/>
+                    <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding TimeoutError.TotalMilliseconds, StringFormat=0.0#}"/>
+                </Grid>
             </StackPanel>
         </GroupBox>
         <GroupBox Header="Значения" Grid.Column="1">
