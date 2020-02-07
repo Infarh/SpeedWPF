@@ -39,6 +39,8 @@ namespace SpeedWPF.Services
             }
         }
 
+        public bool Enabled => !_DataUpdateCancellation?.Token.IsCancellationRequested ?? false;
+
         private CancellationTokenSource _DataUpdateCancellation;
         public void StartDataUpdate(TimeSpan Timeout)
         {

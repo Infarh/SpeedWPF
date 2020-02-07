@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Windows.Input;
+using SpeedWPF.Commands;
 using SpeedWPF.Services.Interfaces;
 using SpeedWPF.ViewModels.Base;
 
@@ -18,10 +20,37 @@ namespace SpeedWPF.ViewModels
 
         #endregion
 
+        #region Timeout : int - Период обновления данных в мс
+
+        /// <summary>Период обновления данных в мс</summary>
+        private int _Timeout = 20;
+
+        /// <summary>Период обновления данных в мс</summary>
+        public int Timeout
+        {
+            get => _Timeout;
+            set
+            {
+                if(value <= 0) 
+                    throw new ArgumentOutOfRangeException(
+                        nameof(value), value, 
+                        "Значение должно быть больше 0");
+                Set(ref _Timeout, value);
+            }
+        }
+
+        #endregion
+
         public ValueModel[] Values { get; }
+
+        public ICommand StartCommand { get; }
+        public ICommand StopCommand { get; }
 
         public MainWindowViewModel(IDataService DataService)
         {
+            StartCommand = new LambdaCommand(OnStartCommandExecuted, CanStartCommandExecute);
+            StopCommand = new LambdaCommand(OnStopCommandExecuted, CanStopCommandExecute);
+
             _DataService = DataService;
             var data = _DataService.Data;
             var values_count = data.Length / 8;
@@ -31,6 +60,14 @@ namespace SpeedWPF.ViewModels
             Values = values;
             _DataService.DataChanged += OnDataChanged;
         }
+
+        private bool CanStartCommandExecute() => !_DataService.Enabled;
+
+        private void OnStartCommandExecuted() => _DataService.StartDataUpdate(TimeSpan.FromMilliseconds(Timeout));
+
+        private bool CanStopCommandExecute() => _DataService.Enabled;
+
+        private void OnStopCommandExecuted() => _DataService.StopDataUpdate();
 
         private void OnDataChanged(object Sender, EventArgs E)
         {

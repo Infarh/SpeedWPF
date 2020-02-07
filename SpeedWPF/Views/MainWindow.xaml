@@ -15,8 +15,8 @@
         </Grid.ColumnDefinitions>
         <GroupBox Header="Управление" Grid.Column="0">
             <StackPanel Margin="5">
-                <Button Content="Запуск" Margin="5,3" Padding="30,5"/>
-                <Button Content="Остановка" Margin="5,3" Padding="30,5"/>
+                <Button Content="Запуск" Margin="5,3" Padding="30,5" Command="{Binding StartCommand}"/>
+                <Button Content="Остановка" Margin="5,3" Padding="30,5" Command="{Binding StopCommand}"/>
             </StackPanel>
         </GroupBox>
         <GroupBox Header="Значения" Grid.Column="1">
